@@ -6,6 +6,9 @@ import Mathlib.Data.Real.Basic
 namespace LoVe
 namespace PROJECT
 
+--=================================================================================--
+-- Question hypothesis for 1968 IMO Q5
+--=================================================================================--
 
 variable {f : ℝ → ℝ}
 variable {a : ℝ} (h_a_pos : a > 0)
@@ -13,6 +16,10 @@ variable (h_f_eq : ∀ (x : ℝ), f (x + a) = (1 / 2) + Real.sqrt (f x - (f x) ^
 
 variable (h_nonneg_pre : ∀ (x : ℝ), f x - (f x) ^ 2 ≥ 0)
 variable (h_lt : ∀ (x : ℝ), 0 ≤ f x - 1 / 2)
+
+--=================================================================================--
+-- Helper lemmas for 1968 IMO Q5 (a)
+--=================================================================================--
 
 lemma f_periodic : ∀ (x : ℝ), f (x + (a + a)) = f x := by
   intro x
@@ -66,6 +73,59 @@ lemma f_periodic : ∀ (x : ℝ), f (x + (a + a)) = f x := by
 
   exact h11
 
+--=================================================================================--
+-- Helper lemmas for 1968 IMO Q5 (b)
+--=================================================================================--
+
+noncomputable def f_example (x : ℝ) : ℝ :=
+  if Even ⌊x⌋ then 1 else 1/2
+
+lemma lemma_add : (1 : ℝ) = 1 / 2 + |(1 / 2 : ℝ)| := by
+  rw [abs_of_nonneg (by norm_num)]
+  exact Eq.symm (add_halves 1)
+
+lemma f_example_periodic (x : ℝ) : f_example (x + 1) = 1 / 2 + Real.sqrt (f_example x - (f_example x) ^ 2) := by
+  set n := ⌊x⌋ with hnx
+  have hfloor : ⌊x + 1⌋ = n + 1 := by exact Int.floor_add_one x
+  by_cases he : Even n
+  {
+    have hfx : f_example x = 1 := by rw [f_example, if_pos he]
+    have hfx1 : f_example (x+1) = 1/2 := by
+      rw [f_example, hfloor]
+      simp
+      have h1 : Odd (n + 1) := by exact Even.add_one he
+      exact Int.odd_iff_not_even.mp h1
+    rw [hfx1, hfx]
+    have h0 : Real.sqrt (1 - 1 ^ 2) = 0 := by
+      calc
+        Real.sqrt (1 - 1 ^ 2) = Real.sqrt (1 - 1) := by ring_nf
+        _ = Real.sqrt 0 := by ring_nf
+        _ = 0 := by exact Real.sqrt_zero
+    rw [h0]
+    exact Eq.symm (AddLeftCancelMonoid.add_zero (1 / 2))
+  }
+  {
+    have hfx : f_example x = 1/2 := by rw [f_example, if_neg he]
+    have hfx1 : f_example (x+1) = 1 := by
+      rw [f_example, hfloor]
+      simp
+      exact Int.even_add_one.mpr he
+    rw [hfx1, hfx]
+    have h0 : Real.sqrt (1 / 2 - (1 / 2) ^ 2) = |1 / 2| := by
+      calc
+        Real.sqrt (1 / 2 - (1 / 2) ^ 2) = Real.sqrt (1 / 2 - 1 / 4) := by ring_nf
+        _ = Real.sqrt (1 / 4) := by ring_nf
+        _ = Real.sqrt ((1 / 2)^2) := by ring_nf
+        _ = |1 / 2| := by exact Real.sqrt_sq_eq_abs (1 / 2)
+    rw [h0]
+    exact lemma_add
+  }
+
+--=================================================================================--
+-- The formalization of 1968 IMO Q5
+--=================================================================================--
+
+-- 1968 IMO Q5 (a)
 theorem exists_periodic_b : ∃ b > 0, ∀ (x : ℝ), f (x + b) = f x := by
   use a + a
   apply And.intro
@@ -76,7 +136,10 @@ theorem exists_periodic_b : ∃ b > 0, ∀ (x : ℝ), f (x + b) = f x := by
     exact fun x => f_periodic h_f_eq h_nonneg_pre h_lt x
   }
 
-
+-- 1968 IMO Q5 (b)
+theorem f_example_satisfies_eqn : ∀ (x : ℝ), f_example (x + 1) = 1 / 2 + Real.sqrt (f_example x - (f_example x) ^ 2) := by
+  intro x
+  exact f_example_periodic x
 
 
 end PROJECT end LoVe
