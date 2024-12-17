@@ -10,7 +10,7 @@ The problem comes from [IMO's official archive](https://www.imo-official.org/pro
 
 Let $f$ be a real-valued function defined for all real numbers $x$ such that, for some positive constant $a$, the equation 
 
-​                                             $$ f(x + a) = \frac{1}{2} + \sqrt{f(x) - [f(x)]^2} $$
+​                                             $ f(x + a) = \frac{1}{2} + \sqrt{f(x) - [f(x)]^2} $
 
 holds for all \( x \).  
 
@@ -24,21 +24,21 @@ holds for all \( x \).
 
 (a) Since we can observe that 
 
-​     $$ f(x + a)(1 - f(x + a)) = \frac{1}{4} - (f(x) - f(x)f(x)) = (f(x) - \frac{1}{2})^2$$
+​     $ f(x + a)(1 - f(x + a)) = \frac{1}{4} - (f(x) - f(x)f(x)) = (f(x) - \frac{1}{2})^2$
 
 ​     Then
 
-​     $$f(x + 2a) = \frac{1}{2} + \sqrt{(\frac{1}{2} - f(x))^2} = f(x)$$
+​     $f(x + 2a) = \frac{1}{2} + \sqrt{(\frac{1}{2} - f(x))^2} = f(x)$
 
 ​     So that we can prove that there exists a positive number $b = 2a$ such that  $f(x + b) = f(x)$ for all $x$
 
 (b) We can construct the following $f$
 
-​	$$  f(x) = \begin{cases} 1 & \text{if } \lfloor x \rfloor \text{ is even}, \\ \frac{1}{2} & \text{if } \lfloor x \rfloor \text{ is odd}. \end{cases}$$
+​	$  f(x) = \begin{cases} 1 & \text{if } \lfloor x \rfloor \text{ is even}, \\ \frac{1}{2} & \text{if } \lfloor x \rfloor \text{ is odd}. \end{cases}$
 
 ​      And we can verify that 
 
-​	$$ f(x + 1) = \frac{1}{2} + \sqrt{f(x) - [f(x)]^2} $$
+​	$ f(x + 1) = \frac{1}{2} + \sqrt{f(x) - [f(x)]^2} $
 
 
 
